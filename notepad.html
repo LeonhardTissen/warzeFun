@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepad</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'sans-serif';
+            background-color: white;
+        }
+        #toolbar {
+            border-bottom: 1px solid #F0F0F0;
+            user-select: none;
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height: 20px;
+            z-index: 3;
+        }
+        textarea {
+            width: 100%;
+            height: calc(100% - 25px);
+            position: absolute;
+            resize: none;
+            border: none;
+            outline: none;
+            font-size: 20px;
+            top: 25px;
+            overflow: auto;
+        }
+        .toolbarbutton {
+            border-radius: 0px;
+            border: none;
+            cursor: pointer;
+            margin: 0;
+            display: inline-block;
+            background-color: #FFF;
+        }
+        .toolbarbutton:hover {
+            background-color: #E5F3FF;
+            outline: 1px solid #C2DEF5;
+        }
+        .dropdown {
+            opacity: 0;
+            pointer-events: none;
+            width: 220px;
+            position: absolute;
+            background-color: #F0F0F0;
+            z-index: 2;
+            transition: opacity 0.2s;
+            min-height: 10px;
+        }
+        .dropdown button {
+            margin: 2px;
+            padding-left: 40px;
+            display: block;
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        .dropdown button:hover {
+            background-color: #E5F3FF;
+        }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <div class="toolbarbutton">
+            New
+            <div class="dropdown">
+                <button onclick="newFile()">New File</button>
+            </div>
+        </div>
+        <div class="toolbarbutton">
+            Save
+            <div class="dropdown">
+                <button onclick="saveFile(false)">Save</button>
+                <button onclick="saveFile(true)">Save As</button>
+            </div>
+        </div>
+        <div class="toolbarbutton">
+            Load
+            <div class="dropdown" id="loadcontainer">
+            </div>
+        </div>
+        <div class="toolbarbutton">
+            Font
+            <div class="dropdown">
+                <button onclick="modifyFontSize(1.2)">Increase Font Size</button>
+                <button onclick="modifyFontSize(0.8)">Decrease Font Size</button>
+            </div>
+        </div>
+    </div>
+    <textarea spellcheck="false"></textarea>
+    <script>
+        const text = document.querySelector('textarea');
+        const storagePrefix = 'notepadSave-';
+        const minimumFontSize = 8;
+        const maximumFontSize = 200;
+        const unsavedChangesMessage = 'There are unsaved changes, are you sure?';
+        const toolbarButtons = document.querySelectorAll('.toolbarbutton');
+        let openedFileName = '';
+        let fontSize = 20;
+
+        function hideDropdowns() {
+            toolbarButtons.forEach((button) => {
+                button.children[0].style.pointerEvents = 'none';
+                button.children[0].style.opacity = 0;
+            });
+        }
+        
+        toolbarButtons.forEach((button) => {
+            button.onclick = function() {
+                if (event.target !== this) {
+                    return;
+                }
+                if (this.children[0].style.pointerEvents !== 'all') {
+                    hideDropdowns();
+                    this.children[0].style.pointerEvents = 'all';
+                    this.children[0].style.opacity = 1;
+                } else {
+                    hideDropdowns();
+                };
+            };
+        });
+        
+        text.onclick = function() {
+            hideDropdowns();
+        }
+
+        function newFile() {
+            hideDropdowns();
+            if (text.value === '') {
+                return;
+            }
+            if (!confirm(unsavedChangesMessage)) {
+                return;
+            };
+            text.value = '';
+        }
+
+        function saveFile(forceNamePrompt) {
+            hideDropdowns();
+            if (openedFileName === '' || forceNamePrompt) {
+                const newFileName = prompt("Enter Filename:").replaceAll(' ','_');
+                openedFileName = (newFileName === null ? 'Untitled' + Math.floor(Math.random() * 1000000) : newFileName);
+            }
+            let new_button = false;
+            const file_name = storagePrefix + openedFileName;
+            if (localStorage.getItem(file_name) === null) {
+                new_button = true;
+            }
+            localStorage.setItem(file_name, text.value);
+            if (new_button) {
+                addLoadButton(openedFileName, text.value);
+            }
+        }
+
+        function addLoadButton(name, data) {
+            const button = document.createElement('button');
+            button.onclick = function() {
+                hideDropdowns();
+                text.value = data;
+                openedFileName = name;
+            };
+            button.innerText = name;
+            document.getElementById('loadcontainer').appendChild(button);
+        };
+        
+        Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith(storagePrefix)) {
+                addLoadButton(key.replace(storagePrefix, ''), localStorage.getItem(key));
+            };
+        });
+        
+        function modifyFontSize(mod) {
+            fontSize *= mod;
+            fontSize = Math.min(Math.max(fontSize, minimumFontSize), maximumFontSize)
+            text.style.fontSize = fontSize + 'px';
+        };
+
+        if (location.hash !== '') {
+            const fileName = location.hash.replace('#','');
+            console.log(fileName)
+            text.value = localStorage.getItem(storagePrefix + fileName);
+            openedFileName = fileName;
+        };
+    </script>
+</body>
+</html>

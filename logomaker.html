@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Logo Maker</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <canvas id="logo"></canvas>
+    <script>
+const scale = 300;
+
+let warzelogo = [
+    ["br#F00",        "bl#F00"],
+    ["tr#F00,tc#000", "tl#F00,tc#000"]
+];
+
+let pplogo = [
+    ["sq#80F", "sq#88F,bl#80F", "bl#88F"],
+    ["sq#80F", "sq#88F,tl#80F", "tl#88F"],
+    ["sq#80F", "sq#88F",        "em#FFF"]
+];
+
+function render(data, cvs) {
+    const ctx = cvs.getContext('2d');
+    cvs.width = data[0].length * scale;
+    cvs.height = data.length * scale;
+    for (let y = 0; y < data.length; y ++) {
+        for (let x = 0; x < data[0].length; x ++) {
+            const item = data[y][x];
+
+            if (item !== 0) {
+                if (item.includes(',')) {
+                    item.split(',').forEach((subitem) => {
+                        drawCell(subitem, x, y, ctx)
+                    })
+                } else {
+                    drawCell(item, x, y, ctx)
+                }
+            };
+        };
+    };
+};
+
+function drawCell(item, x, y, ctx) {
+    const tmpsplit = item.split('#');
+    const type = tmpsplit[0];
+    const color = '#' + tmpsplit[1];
+
+    ctx.fillStyle = color;
+    const px = x + 1;
+    const py = y + 1;
+    const hx = x + 0.5;
+    const hy = y + 0.5;
+    const hscale = scale * 0.5;
+    switch (type) {
+        case 'sq':
+            ctx.fillRect(x * scale, y * scale, scale, scale);
+            break;
+        case 'br':
+            ctx.beginPath();
+            ctx.arc(px * scale, py * scale, scale, Math.PI, Math.PI * 1.5);
+            ctx.lineTo(px * scale, py * scale);
+            ctx.fill();
+            break;
+        case 'bl':
+            ctx.beginPath();
+            ctx.arc(x * scale, py * scale, scale, Math.PI * 1.5, 0, false);
+            ctx.lineTo(x * scale, py * scale);
+            ctx.fill();
+            break;
+        case 'tr':
+            ctx.beginPath();
+            ctx.arc(px * scale, y * scale, scale, Math.PI * 0.5, Math.PI);
+            ctx.lineTo(px * scale, y * scale);
+            ctx.fill();
+            break;
+        case 'tl':
+            ctx.beginPath();
+            ctx.arc(x * scale, y * scale, scale, 0, Math.PI * 0.5, false);
+            ctx.lineTo(x * scale, y * scale);
+            ctx.fill();
+            break;
+        case 'tc':
+            ctx.beginPath();
+            ctx.arc(hx * scale, y * scale, hscale, 0, Math.PI, false);
+            ctx.lineTo(hx * scale, y * scale);
+            ctx.fill();
+            break;
+        case 'bc':
+            ctx.beginPath();
+            ctx.arc(hx * scale, py * scale, hscale, Math.PI, 0, false);
+            ctx.lineTo(hx * scale, py * scale);
+            ctx.fill();
+            break;
+    };
+};
+
+const user_layer = 0;
+const user_color = '#80F';
+
+function canvasControls(data, cvs) {
+    cvs.onclick = function(event) {
+        const cx = Math.floor(event.clientX / scale);
+        const cy = Math.floor(event.clientY / scale);
+        const ax = Math.floor(event.clientX / scale * 3) % 3;
+        const ay = Math.floor(event.clientY / scale * 3) % 3;
+        console.log(cx, cy, ax, ay);
+
+        actions = data[cy][cx].split(',');
+
+        if (actions.length === 1) {
+            const types = [
+                ["tl", "tc", "tr"],
+                ["sq", "sq", "sq"],
+                ["bl", "bc", "br"]
+            ];
+            actions[0] = types[ay][ax] + user_color;
+        };
+
+        data[cy][cx] = actions.join(',');
+        console.log(data[cy][cx])
+
+        render(data, cvs);
+    }
+};
+
+render(pplogo, document.getElementById('logo'))
+canvasControls(pplogo, document.getElementById('logo'))
+    </script>
+</body>
+</html>
