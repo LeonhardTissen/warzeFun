@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/png" href="/static/warze.png"/>
+    <title>Calculator</title>
+    <style>
+        :root {
+            --dark: #13131310;
+            --main: #191919D0;
+            --text: #dec36b;
+        }
+        * {
+            margin: 0;
+            border: none;
+            color: var(--text);
+            height: calc(100vh / 6.34);
+            padding: 0;
+            outline: 0;
+            font-size: 28px;
+            background-color: transparent;
+			font-family: sans-serif;
+        }
+        button {
+            cursor: pointer;
+            transition: background-color 0.1s ease-in;
+            width: calc(50% - 4px);
+        }
+        button:hover {
+            background-color: var(--dark);
+        }
+    </style>
+</head>
+<body style="overflow:hidden;background-color:var(--main);">
+    <div style="position:relative;background-color:var(--dark);">
+        <p id="o" style="font-size:50px;height:58px;position:absolute;right:10px;top:50%;transform:translateY(-50%);"></p>
+    </div>
+    <button onclick="o.innerText = o.innerText.slice(0, -1)">Back</button>
+    <button onclick="o.innerText = ''">Clear</button>
+    <div id="f"></div>
+    <script>
+        document.documentElement.style.setProperty('--text', '#'+['519b70','a85e46','42a6ad','ac6bde','de6b9d','dec36b'][Math.floor(Math.random() * 6)]);
+        function e(i) {return document.getElementById(i)};
+        const o = e('o');
+        '789-456+123x.0=/'.split('').forEach((k) => {
+            e('f').innerHTML += `<button id="${k}" style="width:25%;" onclick="o.innerText += '${k}'">${k}</button>`;
+        });
+        e('=').onclick = function() {
+            o.innerText = eval(o.innerText.replaceAll('x','*'));
+        };
+    </script>
+</body>
+</html>
