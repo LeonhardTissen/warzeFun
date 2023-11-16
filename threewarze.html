@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+	<style type="text/css">
+		#bg {
+			top: 0;
+			left: 0;
+			position: fixed;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+</head>
+<body>
+	<canvas id="bg"></canvas>
+	<script>
+		const scene = new THREE.Scene();
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#bg')
+})
+
+function window_resize() {
+  camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 10000);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.position.set(0, 0, 80)
+}
+window.addEventListener('resize', window_resize)
+window_resize()
+
+function newSphere(radius=10,widthseg=30,heightseg=30,xpos=0,ypos=0,zpos=0,color=0xFF0000,material="standard") {
+  var geometry = new THREE.SphereGeometry(radius, widthseg, heightseg)
+  switch(material) {
+    case "standard":
+      var material = new THREE.MeshStandardMaterial({color: color});
+      break;
+    case "physical":
+      var material = new THREE.MeshPhysicalMaterial({color: 0xff0000, emissive: 0x111111, metalness: 0.5, roughness: 0.3});
+      break;
+  }
+  var sphere = new THREE.Mesh(geometry, material);
+  sphere.position.set(xpos,ypos,zpos)
+  scene.add(sphere)
+  return sphere
+}
+
+function newCylinder(radius=10,height=10,radialseg=30,xpos=0,ypos=0,zpos=0,color=0xFF0000) {
+  var geometry = new THREE.CylinderGeometry(radius, radius, height, radialseg)
+  var material = new THREE.MeshPhongMaterial({color: color});
+  var cylinder = new THREE.Mesh(geometry, material);
+  cylinder.position.set(xpos,ypos,zpos)
+  scene.add(cylinder)
+  return cylinder
+}
+
+function generateWart(sphere = "default", eyes = "default", hat = "default") {
+  for( var i = scene.children.length - 1; i >= 0; i--) { 
+    obj = scene.children[i];
+    scene.remove(obj); 
+  }
+  newLight(30, 30, 0, 0xFFFFFF)
+  newLight(0, -30, 0, 0x222222)
+  switch(sphere) {
+    case "default":
+      newSphere(10,30,30,0,0,0,0xFF0000,"standard");
+      break;
+    case "gold":
+      newSphere(10,30,30,0,0,0,0xFF8800,"physical");
+      break;
+  }
+  newSphere(4,20,20,7,0,3,0xFFFFFF)
+  newSphere(4,20,20,7,0,-3,0xFFFFFF)
+  newSphere(2,20,20,10,0,3,0x333333)
+  newSphere(2,20,20,10,0,-3,0x333333)
+  newCylinder(10,3,30,0,8,0,0x333333)
+  newCylinder(6,10,30,0,14,0,0x333333)
+  newCylinder(6.1,1,30,0,10.5,0,0xFF0000)
+}
+generateWart()
+
+function newLight(xpos,ypos,zpos,color) {
+  var directionalLight = new THREE.DirectionalLight(color)
+  directionalLight.position.set(xpos,ypos,zpos)
+  scene.add(directionalLight)
+  return directionalLight
+}
+
+fogColor = new THREE.Color(0x444444);
+ 
+scene.background = fogColor;
+scene.fog = new THREE.Fog(fogColor, 0.0025, 500);
+
+var time = 0;
+var t = 0;
+function animate() {
+  t += 0.01;
+  time = Math.sin(t) / 2 + 1.6;
+  renderer.render(scene, camera);
+  camera.rotation.y = time
+  camera.position.x = Math.sin(time) * 50
+  camera.position.z = Math.cos(time) * 50
+  window.requestAnimationFrame(animate);
+}
+animate();
+
+	</script>
+</body>
+</html>
