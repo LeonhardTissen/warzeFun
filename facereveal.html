@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Face Reveal</title>
+	<style>
+		body {
+			height: 100vh;
+			margin: 0;
+			background-color: #36393F;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		#center {
+			width: 330px;
+			height: 330px;
+			border: 2px solid #313339;
+			border-radius: 5px;
+			cursor: pointer;
+			background-image: url('assets/facereveal/spoiler.png');
+		}
+		#center:hover {
+			background-position-y: 330px;
+		}
+		video {
+			display: none;
+			width: 330px;
+			height: 330px;
+		}
+		.opacity {
+			opacity: 1;
+			transition: opacity 0.1s ease-in-out;
+		}
+		.opacity:hover {
+			opacity: 0;
+		}
+	</style>
+</head>
+<body id="body">
+	<div id="center" onclick="reveal()">
+		<video src="/assets/facereveal/video.mp4" autoplay="false"></video>
+	</div>
+	<script>
+		const video = document.querySelector('video');
+		function reveal() {
+			video.style.display = 'block';
+			video.play();
+		}
+	</script>
+</body>
+</html>
