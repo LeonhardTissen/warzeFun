@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Big Emote Cutter</title>
+	<meta property="og:title" content="Big Emote Cutter" />
+	<meta property="og:description" content="Convert small emojis into bigger ones by cutting them up into multiple parts." />
+	<meta property="description" content="Convert small emojis into bigger ones by cutting them up into multiple parts." />
+	<meta name="theme-color" content="#BBBBBB">
+	<style type="text/css">
+		* {
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="fileinput">
+		<input type="file" id="file">
+	</div>
+	<div id="settings" style="display:none">
+		<image id="preview">
+		<div id="dividepreview" style="position:fixed;border:1px dotted white;top:0px;display:block;"></div>
+		<br>
+		Divisions: <b id="amount">3</b>
+		<input type="range" name="" min="2" max="9" value="3" oninput="slider(this.value)">
+		<button onclick="download()">Download</button>
+		<textarea id="copypaste" style="user-select:all;display:block"></textarea>
+	</div>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+	<script type="text/javascript">
+		const genRanHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+
+		file = document.getElementById('file');
+		fileinput = document.getElementById('fileinput');
+		preview = document.getElementById('preview');
+		settings = document.getElementById('settings');
+		amount = document.getElementById('amount');
+		dividepreview = document.getElementById('dividepreview');
+		copypaste = document.getElementById('copypaste');
+
+		file.addEventListener('input', function() {
+			inputimage = this.files[0];
+			var binaryData = [];
+			binaryData.push(inputimage);
+			preview.src = URL.createObjectURL(new Blob(binaryData, {type: "image/png"}))
+			fileinput.style.display = "none";
+			settings.style.display = "block";
+		})
+
+		preview.onload = function() {
+			slider(3);
+		}
+
+		var section;
+		function slider(value) {
+			divisions = value;
+			amount.innerHTML = divisions;
+			section = preview.width / divisions
+			dividepreview.style.width = section + "px";
+			dividepreview.style.height = section + "px";
+		}
+
+		function download() {
+			identifier = genRanHex(4);
+			section = preview.width / divisions
+			zip = new JSZip();
+			img = zip.folder(identifier + "-images");
+			temp = document.createElement('canvas')
+			temp.width = section;
+			temp.height = section;
+			ctx = temp.getContext('2d');
+			copypaste.rows = divisions;
+			copypaste.cols = divisions * 10;
+			copypaste.value = ""
+			for (y = 0; y < divisions; y ++) {
+				for (x = 0; x < divisions; x ++) {
+					ctx.clearRect(0, 0, section, section)
+					ctx.drawImage(preview, x * section, y * section, section, section, 0, 0, section, section);
+					file = temp.toDataURL("image/png").split(',')[1]
+					img.file(identifier + (y * divisions + x) + ".png", file, {base64: true});
+					copypaste.value += `:${identifier}${(y * divisions + x)}:`
+				}
+				copypaste.value += "\n";
+			}
+
+			zip.generateAsync({type:"blob"})
+			.then(function(content) {
+				saveAs(content, "warze.org-" + identifier + ".zip");
+			});
+		}
+	</script>
+</body>
+</html>
