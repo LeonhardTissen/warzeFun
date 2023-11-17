@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jelly's Venture</title>
+	<style type="text/css">
+		@font-face {
+			font-family: "Jelly";
+			src: url('assets/jellyventure/jelly-font.woff2') format('woff2');
+		}
+		@font-face {
+			font-family: "Futura";
+			src: url('assets/jellyventure/futura light bt.ttf');
+		}
+		::-webkit-scrollbar {
+		  width: 30px;
+		}
+		::-webkit-scrollbar-track {
+		  background: #5F02;
+		}
+		::-webkit-scrollbar-thumb {
+		  background: #5F08;
+		}
+		::-webkit-scrollbar-thumb:hover {
+		  background: #5F0;
+		}
+		* {
+			font-family: "Jelly";
+			color: white;
+			font-size: 40px;
+			margin: 0;
+			user-select: none;
+		}
+		h1 {
+			letter-spacing: 2px;
+			text-shadow: 0px 0px 5px black;
+			margin: 20px;
+		}
+		p {
+			margin: 10px;
+			font-family: "Futura";
+		}
+		body {
+			margin: 0;
+			background-color: #45CD00;
+			background-image: url(assets/jellyventure/grassbg.png);
+			min-width: 1200px;
+			overflow-x: hidden;
+		}
+		button {
+			border: none;
+			background: #1115;
+			border-radius: 10px;
+			padding: 15px;
+			cursor: pointer;
+		}
+		button:hover {
+			background: #1112;
+		}
+		img {
+			pointer-events: none;
+		}
+		#banner {
+			width: 100%;
+		}
+		.center {
+			text-align: center;
+			display: block;
+		}
+		.section {
+			width: 100%;
+			height: 500px;
+			text-align: center;
+			margin-top:10px;
+		}
+		.subsection {
+			width: 500px;
+			height: 500px;
+			display: inline-block;
+			vertical-align: top;
+			background: #333 url(assets/jellyventure/seamlesspattern.png);
+			background-position: 0px 0px;
+			background-size: 200px 200px;
+			animation: 5s infinite bgscroll linear;
+		}
+		@keyframes bgscroll {
+			from {
+				background-position: 0px 0px;
+			}
+			to {
+				background-position: 200px 200px;
+			}
+		}
+		.subsectionimg {
+			width: 100%;
+		}
+		.divider {
+			margin: 50px;
+			border:5px solid white;
+			border-radius:5px
+		}
+		#gettoit {
+			margin-top: 150px;
+			font-size: 80px;
+			color: #45CD00;
+		}
+		#jellylogo {
+			margin-top: 23px;
+			margin-left: 200px;
+			transform: rotateZ(-8deg);
+		}
+		#jellystar {
+			margin-top: 50px;
+		}
+		#jellycoin1 {
+			transform: translate(-220px, -70px) rotateZ(-15deg);
+		}
+		#jellycoin2 {
+			transform: translate(-20px, 5px) rotateZ(10deg);
+		}
+		.animatedarrow {
+			pointer-events: none;
+			transform: translateX(-50px);
+		}
+		#videos {
+			padding: 10px;
+			background: #FFF3;
+			text-align: center;
+		}
+		iframe {
+			border-radius: 20px;
+		}
+		#video {
+			margin-top: 10px;
+			text-align: center;
+			padding-top: 10px;
+			background: #FFF3;
+			display: block;
+		}
+		#playnow {
+			opacity: 0.2;
+			font-size:100px;
+			margin:0;
+			position:absolute;
+			margin-top: 125px;
+			width:max(1200px, 100%);
+			transition: all 0.05s linear;
+		}
+		#video:hover #playnow {
+			opacity: 1;
+			transform: scale(1.1);
+		}
+	</style>
+	<meta property="og:title" content="Jelly's Venture" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://warze.org/jelly-venture" />
+	<meta property="og:image" content="assets/jellyventure/jellylogo.png"/>
+	<meta property="og:description" content="Read about the game here." />
+	<meta property="description" content="Welcome to Warze's Website." />
+	<meta name="viewport" content="width=device-width, initial-scale=0.5"/>
+	<meta name="theme-color" content="#45CD00">
+	<link rel="icon" type="image/png" href="assets/jellyventure/jellylogo.png" />
+</head>
+<body>
+	<a href="https://jelly-venture.netlify.app">
+		<img src="assets/jellyventure/banner.png" id="banner" style="pointer-events: all;" draggable="false">
+	</a>
+	<a id="video" href="https://jelly-venture.netlify.app">
+		<h1 id="playnow">Play now!</h1>
+		<video width="640" height="360" muted autoplay loop style="border-radius:20px">
+			<source src="assets/jellyventure/video.mp4" type="video/mp4">
+		</video>
+	</a>
+	<hr class="divider">
+	<div id="videos">
+		<iframe width="500" height="280" src="https://www.youtube.com/embed/_LRmQFTjsEQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe width="500" height="280" src="https://www.youtube.com/embed/UzCNMB0_oBc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe width="500" height="280" src="https://www.youtube.com/embed/aNE9P1GykcA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+	<p style="margin:20px;text-align:center">Keep scrolling to see my contributions to the game.</p>
+	<hr class="divider">
+	<div class="section">
+		<div class="subsection" style="border-radius:400px 0px 0px 0px">
+			<img src="assets/jellyventure/jellylogo.png" id="jellylogo">
+			<p style="margin-top:47px">Around 4 months ago, I was given the opportunity to take part in a game for the YouTuber <a href="https://www.youtube.com/channel/UC0DZmkupLYwc0yDsfocLh0A">Jelly</a>.</p>
+		</div>
+		<div class="subsection" style="border-radius:0px 250px 250px 0px">
+			<img class="subsectionimg" src="assets/jellyventure/jelle.png" style="border-radius:0px 250px 250px 0px">
+		</div>
+	</div>
+	<div class="section">
+		<div class="subsection" style="border-radius:0px 0px 0px 400px">
+			<img class="subsectionimg" src="assets/jellyventure/level1.png" style="border-radius:0px 0px 0px 400px">
+		</div>
+		<div class="subsection" style="border-radius:0px 400px 0px 0px">
+			<img src="assets/jellyventure/jellystarfront.png" id="jellystar">
+			<img src="assets/jellyventure/jellycoin.png" id="jellycoin1">
+			<img src="assets/jellyventure/jellycoin.png" id="jellycoin2">
+			<p style="margin-top:40px;transform:translateX(-20px)">I was responsible for the World- and Level design, including the art for all the tilesets and the animations for the coins and the stars.</p>
+		</div>
+	</div>
+	<div class="section">
+		<div class="subsection" style="border-radius:400px 0px 0px 0px;overflow:hidden">
+			<img src="assets/jellyventure/longvines.png" style="margin-left: -208px;" >
+			<p style="margin-top:-296px;margin-left:70px;width:400px">I also helped flesh out the gameplay by designing and animating gameplay elements.</p>
+		</div>
+		<div class="subsection" style="border-radius:0px 0px 400px 0px">
+			<img class="subsectionimg" src="assets/jellyventure/level2.png" style="border-radius:0px 0px 400px 0px">
+		</div>
+	</div>
+	<div class="section">
+		<div class="subsection" style="border-radius:0px 0px 0px 400px">
+			<img class="subsectionimg" src="assets/jellyventure/level3.png" style="border-radius:0px 0px 0px 400px">
+		</div>
+		<div class="subsection" style="border-radius:0px 400px 0px 0px">
+			<p style="margin-top:200px;width:434px">Thank you for the opportunity, it was an awesome experience!</p>
+			<img src="assets/jellyventure/boxes.png" style="transform:translate(161px, -59px) scale(0.6)">
+		</div>
+	</div>
+	<div class="section">
+		<div class="subsection" style="width:1010px;border-radius:250px 0px 400px 250px">
+			<h1 id="gettoit">What are you waiting for?</h1>
+			<a class="center" href="https://jelly-venture.netlify.app">
+				<button>Play Jelly's Venture</button>
+			</a>
+			<img src="assets/jellyventure/arrow.png" class="animatedarrow">
+		</div>
+	</div>
+	<a class="center" href="https://warze.org" style="margin:20px">
+		<button>...or check out my other projects</button>
+	</a>
+	<br style="line-height:500px">
+</body>
+</html>
