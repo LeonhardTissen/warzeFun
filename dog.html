@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Doggo Simulator</title>
+	<style>
+		input {
+			width: 100%;
+			border: 0px;
+			font-family: "Gobfont";
+			font-size: 50px;
+			text-align: center;
+		}
+		@font-face {
+			font-family: "Gobfont";
+			src: url("assets/dog/Gobsayer-Regular.ttf");
+		}
+		#dogs {
+			display: none;
+		}
+		.select {
+			display: inline-block;
+			width: 33%;
+		}
+		.select:hover {
+			transform: scale(1.1);
+		}
+		h1 {
+			font-family: "Gobfont";
+			font-size: 100px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<input type="What is your name?" name="name" id="name" placeholder="If you were a dog, what would you name be?">
+	<div id="dogs">
+		<h1>Which dog do you want to be?</h1>
+		<img src="assets/dog/dog1.png" class="select" onclick=select(1)>
+		<img src="assets/dog/dog2.png" class="select" onclick=select(2)>
+		<img src="assets/dog/dog3.png" class="select" onclick=select(3)>
+	</div>
+
+	<div id="youaredog">
+		<h1 id="yourname"></h1>
+		<center><img id="youasadog"></center>
+	</div>
+
+	<script>
+		const input = document.getElementById('name');
+		const dogdiv = document.getElementById('dogs');
+		const name = document.getElementById('yourname')
+		const youdiv = document.getElementById("youaredog")
+		const youasadog = document.getElementById("youasadog")
+		const explosion = new Audio();
+		explosion.src = "assets/dog/explode.mp3"
+
+		function select(dogtype) {
+			dogchoice = dogtype
+			dogdiv.style.display = "none"
+			yourname.textContent = "Your name: " + input.value
+			youdiv.style.display = "block"
+			youasadog.src = `assets/dog/dog${dogchoice}.png`;
+			setTimeout(() => {
+				youasadog.src = "assets/dog/tenor.gif";
+				youasadog.style.width = "100%";
+				explosion.play();
+				yourname.textContent = "You died! Game over"
+			}, 5000);
+		}
+
+		var dogchoice;
+		input.addEventListener("keydown", function(event) {
+			if (event.keyCode === 13) {
+				input.style.display = "none"
+				dogdiv.style.display = "block"
+			}
+		});
+	</script>
+</body>
+</html>
